@@ -1,86 +1,185 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Học Từ Vựng Xây Dựng - Nhật Quang</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Học Từ Vựng Xây Dựng - Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        :root { --p: #6366f1; --g: rgba(255,255,255,0.15); }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
-        body { background: #1a1a2e url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80') no-repeat center center fixed; background-size: cover; min-height: 100vh; display: flex; justify-content: center; align-items: center; color: #fff; }
-        .card { width: 90%; max-width: 450px; background: var(--g); backdrop-filter: blur(20px); border-radius: 25px; padding: 25px; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+        :root { --p: #6366f1; --g: rgba(255, 255, 255, 0.15); --border: rgba(255, 255, 255, 0.3); }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        
+        body { 
+            background: #1a1a2e url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80') no-repeat center center fixed; 
+            background-size: cover; min-height: 100vh; display: flex; justify-content: center; align-items: center; color: #fff; 
+        }
+
+        .app-card { 
+            width: 90%; max-width: 480px; background: var(--g); backdrop-filter: blur(25px); 
+            border-radius: 30px; padding: 25px; border: 1px solid var(--border); box-shadow: 0 25px 50px rgba(0,0,0,0.3); 
+        }
+
+        /* Tracking Header */
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .stat-box { background: rgba(255,255,255,0.1); padding: 15px; border-radius: 20px; text-align: center; border: 1px solid var(--border); }
+        .stat-val { display: block; font-size: 20px; font-weight: bold; color: #6366f1; }
+        .stat-lbl { font-size: 11px; opacity: 0.8; text-transform: uppercase; }
+
+        /* Navigation */
         .nav { display: flex; gap: 10px; margin-bottom: 20px; }
-        .nav-btn { flex: 1; padding: 10px; border: none; border-radius: 12px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; }
-        .nav-btn.active { background: var(--p); font-weight: bold; }
-        .q-img { width: 100%; height: 180px; object-fit: cover; border-radius: 15px; margin-bottom: 15px; background: #000; }
-        .opt { background: rgba(255,255,255,0.1); padding: 12px; border-radius: 12px; margin-top: 10px; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); transition: 0.2s; }
-        .opt:hover { background: rgba(255,255,255,0.2); }
-        .correct { background: #22c55e !important; }
-        .wrong { background: #ef4444 !important; }
-        textarea { width: 100%; height: 200px; background: rgba(0,0,0,0.3); color: #fff; padding: 15px; border-radius: 15px; border: 1px solid var(--p); margin-bottom: 15px; }
-        .btn-save { width: 100%; padding: 15px; border: none; border-radius: 15px; background: var(--p); color: #fff; font-weight: bold; cursor: pointer; }
+        .nav-btn { flex: 1; padding: 12px; border: none; border-radius: 15px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; transition: 0.3s; }
+        .nav-btn.active { background: var(--p); font-weight: bold; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4); }
+
+        /* Quiz Area */
+        .q-img { width: 100%; height: 220px; object-fit: cover; border-radius: 20px; margin-bottom: 15px; background: rgba(0,0,0,0.1); display: block; }
+        .q-word { font-size: 26px; text-align: center; margin-bottom: 5px; }
+        .opt-list { display: grid; gap: 12px; margin-top: 20px; }
+        .opt-item { background: rgba(255,255,255,0.1); padding: 16px; border-radius: 15px; cursor: pointer; border: 1px solid var(--border); transition: 0.2s; }
+        .opt-item:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); }
+        .correct { background: #22c55e !important; border-color: #22c55e; }
+        .wrong { background: #ef4444 !important; border-color: #ef4444; }
+
+        /* Placeholder when empty */
+        #empty-state { text-align: center; padding: 40px 20px; background: rgba(0,0,0,0.1); border-radius: 20px; }
+
+        /* Form */
+        textarea { width: 100%; height: 250px; background: rgba(0,0,0,0.2); color: #fff; padding: 15px; border-radius: 15px; border: 1px solid var(--border); margin-bottom: 15px; outline: none; }
+        .btn-main { width: 100%; padding: 16px; border: none; border-radius: 15px; background: var(--p); color: #fff; font-weight: bold; cursor: pointer; }
+        
+        #next-btn { margin-top: 15px; background: #fff; color: #000; }
     </style>
 </head>
 <body>
-<div class="card">
+
+<div class="app-card">
+    <div class="stats-grid">
+        <div class="stat-box">
+            <span class="stat-val" id="st-learned">0</span>
+            <span class="stat-lbl">Đã học</span>
+        </div>
+        <div class="stat-box">
+            <span class="stat-val" id="st-correct">0</span>
+            <span class="stat-lbl">Câu đúng</span>
+        </div>
+    </div>
+
     <div class="nav">
-        <button class="nav-btn active" onclick="tab('quiz')">✍️ Học tập</button>
-        <button class="nav-btn" onclick="tab('conf')">⚙️ Cài đặt</button>
+        <button class="nav-btn active" id="btn-quiz" onclick="show('quiz')">✍️ Học tập</button>
+        <button class="nav-btn" id="btn-conf" onclick="show('conf')">⚙️ Cài đặt</button>
     </div>
+
     <div id="quiz-sec">
-        <img id="img" class="q-img" src="">
-        <h2 id="word" style="text-align:center">Đang chờ dữ liệu...</h2>
-        <div id="opts"></div>
-        <button id="next" style="display:none; width:100%; margin-top:15px; padding:10px; border-radius:10px; border:none; background:#fff; color:#000; font-weight:bold; cursor:pointer;" onclick="goNext()">Tiếp theo ➔</button>
+        <div id="quiz-ui">
+            <img id="main-img" class="q-img" src="">
+            <h2 class="q-word" id="main-word">Đang tải...</h2>
+            <div class="opt-list" id="opt-container"></div>
+            <button id="next-btn" class="btn-main" style="display:none" onclick="goNext()">Tiếp theo ➔</button>
+        </div>
+        
+        <div id="empty-state" style="display:none">
+            <p style="font-size: 1.2rem; margin-bottom: 15px;">👋 Chào Quang!</p>
+            <p style="opacity:0.8; margin-bottom: 20px;">Hãy vào Cài đặt để nạp bộ từ vựng 18 từ chuyên ngành nhé.</p>
+            <button class="btn-main" onclick="show('conf')">Đi tới Cài đặt</button>
+        </div>
     </div>
+
     <div id="conf-sec" style="display:none">
-        <textarea id="inp" placeholder="Dán mã JSON vào đây..."></textarea>
-        <button class="btn-save" onclick="save()">💾 Lưu dữ liệu</button>
+        <textarea id="json-input" placeholder="Dán mã JSON 18 từ vào đây..."></textarea>
+        <button class="btn-main" onclick="save()">💾 Lưu bài học mới</button>
     </div>
 </div>
+
 <script>
-    let data = [], cur = 0;
+    let vocab = [], cur = 0;
+    let score = { learned: 0, correct: 0 };
+
     window.onload = () => {
-        const s = localStorage.getItem('v_data');
-        if(s) { data = JSON.parse(s); cur = parseInt(localStorage.getItem('v_cur')||0); render(); }
-        else tab('conf');
+        const savedData = localStorage.getItem('v_data');
+        const savedScore = localStorage.getItem('v_score');
+        
+        if(savedScore) score = JSON.parse(savedScore);
+        updateStats();
+
+        if(savedData) {
+            vocab = JSON.parse(savedData);
+            cur = parseInt(localStorage.getItem('v_cur') || 0);
+            render();
+        } else {
+            show('quiz'); // Vẫn ở tab học nhưng hiện empty state
+            document.getElementById('quiz-ui').style.display = 'none';
+            document.getElementById('empty-state').style.display = 'block';
+        }
     };
-    function tab(t) {
+
+    function show(t) {
         document.getElementById('quiz-sec').style.display = t==='quiz'?'block':'none';
         document.getElementById('conf-sec').style.display = t==='conf'?'block':'none';
-        document.querySelectorAll('.nav-btn').forEach((b,i)=>b.classList.toggle('active', (i===0&&t==='quiz')||(i===1&&t==='conf')));
+        document.getElementById('btn-quiz').classList.toggle('active', t==='quiz');
+        document.getElementById('btn-conf').classList.toggle('active', t==='conf');
     }
+
     function render() {
-        if(!data.length) return;
-        const item = data[cur];
-        document.getElementById('word').innerText = item.word || item.question;
-        document.getElementById('img').src = item.image || item.img;
-        const box = document.getElementById('opts'); box.innerHTML = '';
+        if(!vocab.length) return;
+        const item = vocab[cur];
+        document.getElementById('main-word').innerText = item.word || item.question;
+        document.getElementById('main-img').src = item.image || item.img;
+        
+        const container = document.getElementById('opt-container');
+        container.innerHTML = '';
+        
         let choices = item.options || [item.definition];
         if(choices.length < 2) {
             choices = [item.definition];
             while(choices.length < 4) {
-                let r = data[Math.floor(Math.random()*data.length)].definition;
+                let r = vocab[Math.floor(Math.random()*vocab.length)].definition;
                 if(!choices.includes(r)) choices.push(r);
             }
-            choices.sort(()=>Math.random()-0.5);
+            choices.sort(() => Math.random() - 0.5);
         }
+
         choices.forEach(o => {
-            const d = document.createElement('div'); d.className='opt'; d.innerText=o;
-            d.onclick = () => {
-                document.querySelectorAll('.opt').forEach(b=>b.style.pointerEvents='none');
-                if(o === item.definition) d.classList.add('correct');
-                else { d.classList.add('wrong'); document.querySelectorAll('.opt').forEach(b=>{if(b.innerText===item.definition) b.classList.add('correct')}); }
-                document.getElementById('next').style.display='block';
-                const u = new SpeechSynthesisUtterance(item.word || item.question); u.lang='en-US'; speechSynthesis.speak(u);
+            const el = document.createElement('div');
+            el.className = 'opt-item';
+            el.innerText = o;
+            el.onclick = () => {
+                document.querySelectorAll('.opt-item').forEach(b => b.style.pointerEvents = 'none');
+                if(o === item.definition) {
+                    el.classList.add('correct');
+                    score.correct++;
+                } else {
+                    el.classList.add('wrong');
+                    document.querySelectorAll('.opt-item').forEach(b => { if(b.innerText === item.definition) b.classList.add('correct'); });
+                }
+                score.learned++;
+                updateStats();
+                document.getElementById('next-btn').style.display = 'block';
+                const u = new SpeechSynthesisUtterance(item.word || item.question);
+                u.lang = 'en-US';
+                speechSynthesis.speak(u);
             };
-            box.appendChild(d);
+            container.appendChild(el);
         });
-        document.getElementById('next').style.display='none';
+        document.getElementById('next-btn').style.display = 'none';
     }
-    function goNext() { cur = (cur+1)%data.length; localStorage.setItem('v_cur', cur); render(); }
+
+    function updateStats() {
+        document.getElementById('st-learned').innerText = score.learned;
+        document.getElementById('st-correct').innerText = score.correct;
+        localStorage.setItem('v_score', JSON.stringify(score));
+    }
+
+    function goNext() {
+        cur = (cur + 1) % vocab.length;
+        localStorage.setItem('v_cur', cur);
+        render();
+    }
+
     function save() {
-        try { const d = JSON.parse(document.getElementById('inp').value); localStorage.setItem('v_data', JSON.stringify(d)); location.reload(); }
-        catch(e) { alert("Lỗi JSON!"); }
+        try {
+            const d = JSON.parse(document.getElementById('json-input').value);
+            localStorage.setItem('v_data', JSON.stringify(d));
+            location.reload();
+        } catch(e) { alert("Lỗi JSON! Hãy copy lại chính xác mã từ AI."); }
     }
 </script>
 </body>
