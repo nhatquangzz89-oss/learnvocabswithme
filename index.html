@@ -2,154 +2,231 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Vocab Master - Tự Thêm Từ Vựng</title>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Vocab Xây Dựng Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { --p: #6366f1; --bg: #0f172a; }
+        :root { --primary: #6366f1; --accent: #f43f5e; --bg-card: rgba(15, 23, 42, 0.9); }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Quicksand', sans-serif; }
-        body { background: var(--bg); color: white; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
         
-        .container { width: 100%; max-width: 900px; background: rgba(255,255,255,0.05); padding: 25px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); }
+        body { 
+            background: #0f172a url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2000') no-repeat center center fixed; 
+            background-size: cover; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px;
+        }
+
+        /* Giao diện Kính mờ - Đẹp và Sang */
+        .glass-container {
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            border-radius: 30px; width: 100%; max-width: 1100px; padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.15); box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            color: white; display: flex; flex-direction: column; gap: 20px;
+        }
+
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        
-        .nav-btn { padding: 8px 15px; border-radius: 10px; border: none; cursor: pointer; font-weight: 700; background: rgba(255,255,255,0.1); color: #94a3b8; margin-left: 10px; }
-        .nav-btn.active { background: var(--p); color: white; }
+        .tab-group { display: flex; background: rgba(0,0,0,0.3); padding: 5px; border-radius: 12px; }
+        .tab-btn { padding: 10px 20px; border: none; border-radius: 10px; background: transparent; color: #94a3b8; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .tab-btn.active { background: var(--primary); color: white; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3); }
 
-        .main-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
-        .img-box { border-radius: 15px; overflow: hidden; height: 300px; background: #000; border: 1px solid #334155; }
-        .img-box img { width: 100%; height: 100%; object-fit: cover; }
-        
-        .q-text { font-size: 20px; font-weight: 700; margin-bottom: 15px; line-height: 1.5; color: #e2e8f0; }
-        .blank { color: #facc15; border-bottom: 2px solid #facc15; }
-        
-        .opts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .opt { padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid #334155; border-radius: 10px; cursor: pointer; text-align: center; font-weight: 700; transition: 0.2s; }
-        .correct { background: #16a34a !important; border-color: #22c55e !important; }
-        .wrong { background: #dc2626 !important; border-color: #ef4444 !important; }
-        
-        .fb-box { margin-top: 15px; padding: 15px; background: rgba(99, 102, 241, 0.1); border-radius: 12px; border-left: 4px solid var(--p); display: none; }
-        .next-btn { width: 100%; padding: 15px; margin-top: 15px; border-radius: 12px; border: none; background: var(--p); color: white; font-weight: 700; cursor: pointer; }
+        .stat-group { display: flex; gap: 15px; font-weight: 700; color: #facc15; }
+        .stat-item { background: rgba(0,0,0,0.2); padding: 8px 18px; border-radius: 12px; }
 
-        #view-admin textarea { width: 100%; height: 300px; background: #000; color: #4ade80; padding: 15px; border-radius: 10px; font-family: monospace; font-size: 13px; }
-        .admin-btns { display: flex; gap: 10px; margin-top: 10px; }
+        .main-layout { display: grid; grid-template-columns: 240px 1fr 1.2fr; gap: 25px; height: 500px; }
+
+        /* Cột 1: Danh sách từ */
+        .sidebar { background: rgba(0,0,0,0.2); border-radius: 20px; padding: 12px; overflow-y: auto; border: 1px solid rgba(255,255,255,0.05); }
+        .menu-item { 
+            padding: 12px; margin-bottom: 7px; border-radius: 10px; cursor: pointer;
+            background: rgba(255,255,255,0.03); border: 2px solid transparent; font-weight: 600; font-size: 14px;
+        }
+        .menu-item.active { background: rgba(99, 102, 241, 0.2); border-color: var(--primary); color: white; }
+
+        /* Cột 2: Ảnh */
+        .preview-box { border-radius: 20px; overflow: hidden; border: 4px solid #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.1); background: #eee; }
+        .preview-box img { width: 100%; height: 100%; object-fit: cover; }
+        
+        /* Cột 3: Nội dung câu hỏi */
+        .quiz-panel { display: flex; flex-direction: column; gap: 18px; }
+        .question-card { background: rgba(0,0,0,0.2); padding: 25px; border-radius: 20px; font-size: 22px; font-weight: 600; line-height: 1.5; border-left: 6px solid var(--primary); }
+        .blank { color: #facc15; font-weight: 700; border-bottom: 2px solid #facc15; }
+
+        /* Nút lựa chọn (4 ô) */
+        .option-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .option-btn { background: rgba(255,255,255,0.03); border: 2px solid rgba(255,255,255,0.08); padding: 18px; border-radius: 15px; color: white; font-weight: 700; cursor: pointer; transition: 0.2s; text-align: center; font-size: 16px; }
+        .option-btn:hover { background: rgba(255,255,255,0.08); border-color: var(--primary); transform: translateY(-3px); }
+        
+        /* Màu khi chọn đáp án */
+        .correct { background: #16a34a !important; border-color: #22c55e !important; color: white !important; }
+        .wrong { background: #ef4444 !important; border-color: #f87171 !important; color: white !important; }
+
+        /* Giải thích */
+        .explanation { background: rgba(99, 102, 241, 0.15); padding: 20px; border-radius: 20px; display: none; }
+        .ipa { font-style: italic; opacity: 0.8; margin-top: 5px; font-size: 16px; color: #cbd5e1; }
+        .speaker-btn { background: var(--primary); color: white; border: none; padding: 5px 12px; border-radius: 8px; cursor: pointer; font-size: 16px; margin-left: 10px; }
+
+        /* Nút tiếp theo */
+        .btn-action { width: 100%; padding: 18px; border-radius: 15px; border: none; background: #fff; color: #000; font-weight: 700; font-size: 18px; cursor: pointer; margin-top: auto; display: none; }
     </style>
 </head>
 <body>
 
-<div class="container">
+<div class="glass-container">
     <div class="header">
-        <div id="stats">🔥 Streak: <span id="streak">1</span> | Đúng: <span id="score">0</span></div>
-        <div>
-            <button class="nav-btn active" id="btn-home" onclick="showTab('home')">📖 Học</button>
-            <button class="nav-btn" id="btn-admin" onclick="showTab('admin')">➕ Thêm từ</button>
+        <div class="tab-group">
+            <button class="tab-btn active" onclick="setTab('learn')">✍️ Học tập</button>
+            <button class="tab-btn" onclick="setTab('config')">⚙️ Thêm từ</button>
+        </div>
+        <div class="stat-group">
+            <div class="stat-item">🔥 Streak: <span id="val-streak">1</span></div>
+            <div class="stat-item">Đúng: <span id="val-total">0</span></div>
         </div>
     </div>
 
-    <div id="view-home" class="main-layout">
-        <div class="img-box"><img id="q-img" src=""></div>
-        <div>
-            <div class="q-text" id="q-body"></div>
-            <div class="opts" id="q-opts"></div>
-            <div class="fb-box" id="fb">
-                <h3 id="fb-w" style="color:#facc15"></h3>
-                <p id="fb-d" style="font-size:14px"></p>
+    <div id="page-learn" class="main-layout">
+        <div class="sidebar" id="menu-list"></div>
+        <div class="preview-box">
+            <img id="quiz-img" src="">
+        </div>
+        <div class="quiz-panel">
+            <div class="question-card" id="quiz-text">Đang tải...</div>
+            <div class="option-grid" id="option-grid"></div>
+            <div class="explanation" id="exp-box">
+                <div style="display:flex; align-items:center; margin-bottom:10px;">
+                    <h3 id="fb-word" style="font-size:24px; color:#facc15"></h3>
+                    <button class="speaker-btn" onclick="sayIt()">🔊 Nghe lại</button>
+                </div>
+                <div class="ipa" id="fb-ipa"></div>
+                <p id="fb-def" style="margin-top:10px; font-weight: 600; font-size: 16px; color: #e2e8f0;"></p>
             </div>
-            <button class="next-btn" id="btn-next" style="display:none" onclick="goNext()">TIẾP THEO ➔</button>
+            <button class="btn-action" id="btn-next" onclick="next()">TIẾP THEO ➔</button>
         </div>
     </div>
 
-    <div id="view-admin" style="display:none">
-        <h3 style="margin-bottom:10px">Danh sách từ vựng (JSON)</h3>
-        <textarea id="json-input"></textarea>
-        <div class="admin-btns">
-            <button class="next-btn" style="background:#16a34a" onclick="saveData()">💾 LƯU THAY ĐỔI</button>
-            <button class="next-btn" style="background:#475569" onclick="resetDefault()">🔄 KHÔI PHỤC GỐC</button>
-        </div>
-        <p style="font-size:12px; margin-top:10px; color:#94a3b8">* Bạn có thể thêm từ mới vào danh sách trên theo đúng cấu trúc.</p>
+    <div id="page-config" style="display:none; flex-direction:column; gap:20px">
+        <textarea id="json-input" style="width:100%; height:350px; background:rgba(0,0,0,0.3); border:2px solid var(--primary); border-radius:15px; padding:15px; color:#4ade80; font-family:monospace;" placeholder="Dán JSON vào đây..."></textarea>
+        <button onclick="saveData()" style="padding:15px; background:var(--primary); color:white; border:none; border-radius:10px; cursor:pointer; font-weight:bold;">LƯU VÀ BẮT ĐẦU</button>
     </div>
 </div>
 
 <script>
+    // Dữ liệu mặc định 18 từ của bạn
     const defaultData = [
-        {"word":"Abutment","definition":"Mố cầu","example":"The bridge abutment provides support.","img":"https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600"},
-        {"word":"Steel","definition":"Thép","example":"The frame is made of steel.","img":"https://images.unsplash.com/photo-1516156008625-3a9d6067fab5?w=600"}
+        {"word":"Abutment","definition":"Mố cầu","ipa":"/əˈbʌtmənt/","example":"The bridge abutment provides support.","img":"https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800"},
+        {"word":"Cantilever","definition":"Dầm công-xôn","ipa":"/ˈkæntɪliːvər/","example":"The balcony was a cantilever design.","img":"https://images.unsplash.com/photo-1518005020251-582c7897655d?w=800"},
+        {"word":"Load-bearing","definition":"Chịu lực","ipa":"/ˈloʊdˌberɪŋ/","example":"Load-bearing walls are essential.","img":"https://images.unsplash.com/photo-1503387762-592dea58ef23?w=800"},
+        {"word":"Steel","definition":"Thép","ipa":"/stiːl/","example":"Skyscrapers rely on high-strength steel.","img":"https://images.unsplash.com/photo-1516156008625-3a9d6067fab5?w=800"},
+        {"word":"Compress","definition":"Nén","ipa":"/kəmˈpres/","example":"Try to compress the concrete.","img":"https://images.unsplash.com/photo-1533038590840-1cde6b66b721?w=800"},
+        {"word":"Granite","definition":"Đá Granite","ipa":"/ˈɡrænɪt/","example":"The building base was faced in granite.","img":"https://images.unsplash.com/photo-1525498128493-380d1990a112?w=800"},
+        {"word":"Ratio","definition":"Tỷ lệ","ipa":"/ˈreɪʃioʊ/","example":"The cement ratio is crucial.","img":"https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=800"},
+        {"word":"Cables","definition":"Dây cáp","ipa":"/ˈkeɪblz/","example":"The suspension bridge used huge cables.","img":"https://images.unsplash.com/photo-1445023086979-7244a12345a8?w=800"},
+        {"word":"Truss","definition":"Giàn (kèo)","ipa":"/trʌs/","example":"A timber truss supported the roof.","img":"https://images.unsplash.com/photo-1513828583688-c52646db42da?w=800"},
+        {"word":"Foundation","definition":"Móng nhà","ipa":"/faʊnˈdeɪʃn/","example":"Dig deep for a solid foundation.","img":"https://images.unsplash.com/photo-1584467541268-b040f83be3fd?w=800"},
+        {"word":"Reinforcement","definition":"Cốt thép","ipa":"/ˌriːɪnˈfɔːrsmənt/","example":"Reinforcement increases tensile strength.","img":"https://images.unsplash.com/photo-1590634308295-ce21e8a7f4de?w=800"},
+        {"word":"Column","definition":"Cột","ipa":"/ˈkɑːləm/","example":"They used Greek columns in the design.","img":"https://images.unsplash.com/photo-1515263487990-61b07816b324?w=800"},
+        {"word":"Beam","definition":"Dầm","ipa":"/biːm/","example":"Place the steel beam across.","img":"https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800"},
+        {"word":"Arch","definition":"Vòm","ipa":"/ɑːrtʃ/","example":"The Roman arch was an innovation.","img":"https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800"},
+        {"word":"Span","definition":"Nhịp bridge","ipa":"/spæn/","example":"The total span of the bridge is 2km.","img":"https://images.unsplash.com/photo-1449034446853-66c86144b0ad?w=800"},
+        {"word":"Scaffolding","definition":"Giàn giáo","ipa":"/ˈskæfəldɪŋ/","example":"Scaffolding went up around the site.","img":"https://images.unsplash.com/photo-1503387762-592dea58ef23?w=800"},
+        {"word":"Blueprint","definition":"Bản thiết kế","ipa":"/ˈbluːprɪnt/","example":"The architect drew the first blueprint.","img":"https://images.unsplash.com/photo-1503387762-592dea58ef23?w=800"},
+        {"word":"Excavation","definition":"Việc đào đất","ipa":"/ˌekskəˈveɪʃn/","example":"Excavation began for the basement.","img":"https://images.unsplash.com/photo-1541888946425-d81bb19480c5?w=800"}
     ];
 
-    let db = [], cur = 0, score = 0;
+    let vocabulary = [], currentIdx = 0, score = 0;
 
-    function init() {
-        const saved = localStorage.getItem('my_vocab_v1');
-        db = saved ? JSON.parse(saved) : defaultData;
-        document.getElementById('json-input').value = JSON.stringify(db, null, 2);
-        loadQuestion();
-    }
-
-    function loadQuestion() {
-        if(db.length === 0) {
-            document.getElementById('q-body').innerText = "Chưa có từ nào, hãy vào phần Thêm từ!";
-            return;
-        }
-        const it = db[cur];
-        document.getElementById('q-img').src = it.img;
-        document.getElementById('q-body').innerHTML = it.example.replace(new RegExp(it.word, 'gi'), '<span class="blank">_______</span>');
+    window.onload = () => {
+        // Tự dọn dẹp bộ nhớ đệm cũ để đảm bảo web chạy mượt
+        const keysToRemove = ['v_st', 'v_final', 'v3_data', 'v_data'];
+        keysToRemove.forEach(k => localStorage.removeItem(k));
         
-        let pool = [it.word];
-        while(pool.length < Math.min(4, db.length)) {
-            let r = db[Math.floor(Math.random()*db.length)].word;
-            if(!pool.includes(r)) pool.push(r);
-        }
-        pool.sort(() => Math.random() - 0.5);
+        const savedData = localStorage.getItem('vocab_lux_v1');
+        if(savedData) vocabulary = JSON.parse(savedData);
+        else vocabulary = defaultData;
+        
+        renderApp();
+    };
 
-        const box = document.getElementById('q-opts'); box.innerHTML = "";
-        pool.forEach(o => {
-            const b = document.createElement('div'); b.className = 'opt'; b.innerText = o;
-            b.onclick = () => {
-                document.querySelectorAll('.opt').forEach(x => x.style.pointerEvents = 'none');
-                if(o === it.word) { b.classList.add('correct'); score++; }
-                else { 
-                    b.classList.add('wrong');
-                    document.querySelectorAll('.opt').forEach(x => { if(x.innerText === it.word) x.classList.add('correct'); });
-                }
-                document.getElementById('fb-w').innerText = it.word;
-                document.getElementById('fb-d').innerText = it.definition;
-                document.getElementById('fb').style.display = 'block';
-                document.getElementById('btn-next').style.display = 'block';
-                document.getElementById('score').innerText = score;
-                window.speechSynthesis.speak(new SpeechSynthesisUtterance(it.word));
-            };
-            box.appendChild(b);
+    function renderApp() {
+        if(!vocabulary.length) return;
+        
+        // Cột 1: Danh sách từ
+        const menu = document.getElementById('menu-list');
+        menu.innerHTML = "";
+        vocabulary.forEach((item, i) => {
+            const div = document.createElement('div');
+            div.className = `menu-item ${i === currentIdx ? 'active' : ''}`;
+            div.innerText = `${i+1}. ${item.word}`;
+            div.onclick = () => { currentIdx = i; renderApp(); };
+            menu.appendChild(div);
         });
-        document.getElementById('fb').style.display = 'none';
+
+        const activeItem = vocabulary[currentIdx];
+        document.getElementById('quiz-img').src = activeItem.img;
+        document.getElementById('quiz-text').innerHTML = activeItem.example.replace(new RegExp(activeItem.word, 'gi'), '<span class="blank">_______</span>');
+
+        // Tạo 4 đáp án (1 đúng, 3 ngẫu nhiên)
+        const grid = document.getElementById('option-grid');
+        grid.innerHTML = "";
+        let options = [activeItem.word];
+        while(options.length < Math.min(4, vocabulary.length)) {
+            let rWord = vocabulary[Math.floor(Math.random()*vocabulary.length)].word;
+            if(!options.includes(rWord)) options.push(rWord);
+        }
+        options.sort(() => Math.random() - 0.5);
+
+        // Hiển thị nút lựa chọn
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = opt;
+            btn.onclick = () => {
+                // Khóa lựa chọn và hiện giải thích
+                document.querySelectorAll('.option-btn').forEach(b => b.style.pointerEvents = 'none');
+                if(opt === activeItem.word) {
+                    btn.classList.add('correct');
+                    score++;
+                } else {
+                    btn.classList.add('wrong');
+                    document.querySelectorAll('.option-btn').forEach(b => {
+                        if(b.innerText === activeItem.word) b.classList.add('correct');
+                    });
+                }
+                
+                document.getElementById('val-total').innerText = score;
+                document.getElementById('fb-word').innerText = activeItem.word;
+                document.getElementById('fb-ipa').innerText = activeItem.ipa;
+                document.getElementById('fb-def').innerText = "Nghĩa: " + activeItem.definition;
+                document.getElementById('exp-box').style.display = 'block';
+                document.getElementById('btn-next').style.display = 'block';
+                sayIt();
+            };
+            grid.appendChild(btn);
+        });
+
+        document.getElementById('exp-box').style.display = 'none';
         document.getElementById('btn-next').style.display = 'none';
     }
 
-    function goNext() { cur = (cur + 1) % db.length; loadQuestion(); }
+    // Phát âm chuẩn Mỹ
+    function sayIt() {
+        const msg = new SpeechSynthesisUtterance(vocabulary[currentIdx].word);
+        msg.lang = 'en-US'; window.speechSynthesis.speak(msg);
+    }
 
-    function showTab(t) {
-        document.getElementById('view-home').style.display = t === 'home' ? 'grid' : 'none';
-        document.getElementById('view-admin').style.display = t === 'admin' ? 'block' : 'none';
-        document.getElementById('btn-home').className = 'nav-btn' + (t==='home'?' active':'');
-        document.getElementById('btn-admin').className = 'nav-btn' + (t==='admin'?' active':'');
+    function next() { currentIdx = (currentIdx + 1) % vocabulary.length; renderApp(); }
+
+    function setTab(p) {
+        document.getElementById('page-learn').style.display = p === 'learn' ? 'grid' : 'none';
+        document.getElementById('page-config').style.display = p === 'config' ? 'flex' : 'none';
+        document.querySelectorAll('.tab-btn').forEach(b => b.className = 'tab-btn');
+        event.target.className = 'tab-btn active';
+        if(p==='config') document.getElementById('json-input').value = JSON.stringify(vocabulary, null, 2);
     }
 
     function saveData() {
         try {
             const val = document.getElementById('json-input').value;
-            db = JSON.parse(val);
-            localStorage.setItem('my_vocab_v1', val);
-            alert("Đã lưu thành công!");
-            location.reload();
-        } catch(e) { alert("Lỗi JSON! Bạn hãy kiểm tra kỹ dấu phẩy và dấu ngoặc."); }
+            JSON.parse(val); localStorage.setItem('vocab_lux_v1', val); location.reload();
+        } catch(e) { alert("Lỗi JSON!"); }
     }
-
-    function resetDefault() {
-        if(confirm("Xóa hết từ hiện tại và quay về mặc định?")) {
-            localStorage.removeItem('my_vocab_v1');
-            location.reload();
-        }
-    }
-
-    window.onload = init;
 </script>
 </body>
 </html>
