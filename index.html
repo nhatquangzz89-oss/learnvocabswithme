@@ -2,148 +2,239 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Học Từ Vựng - Fix Triệt Để</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocab Master Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { --p: #4f46e5; }
-        body { font-family: sans-serif; background: #0f172a; color: #334155; display: flex; justify-content: center; padding: 20px; }
-        .card { width: 100%; max-width: 1000px; background: white; border-radius: 15px; padding: 20px; min-height: 500px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .header { display: flex; justify-content: space-between; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #eee; }
-        .nav-btn { padding: 10px 20px; cursor: pointer; border-radius: 8px; border: none; font-weight: bold; background: #e2e8f0; }
-        .nav-btn.active { background: var(--p); color: white; }
+        :root { --primary: #6366f1; --accent: #f43f5e; --bg: #0f172a; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Quicksand', sans-serif; }
         
-        .main { display: grid; grid-template-columns: 200px 1fr 1.2fr; gap: 20px; }
-        .menu { height: 450px; overflow-y: auto; background: #f8fafc; padding: 10px; border-radius: 10px; border: 1px solid #ddd; }
-        .m-item { padding: 10px; margin-bottom: 5px; background: white; border-radius: 5px; cursor: pointer; font-size: 13px; border: 1px solid #eee; }
-        .m-item.active { border-color: var(--p); color: var(--p); font-weight: bold; }
+        body { 
+            background: var(--bg) url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2000') no-repeat center center fixed; 
+            background-size: cover;
+            min-height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            padding: 20px;
+        }
+
+        /* Glassmorphism Effect */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            width: 100%; max-width: 1200px;
+            padding: 30px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            color: white;
+            display: flex; flex-direction: column; gap: 20px;
+        }
+
+        .header { display: flex; justify-content: space-between; align-items: center; }
         
-        .img-box { height: 300px; background: #eee; border-radius: 10px; overflow: hidden; }
-        .img-box img { width: 100%; height: 100%; object-fit: cover; }
+        .tab-group { display: flex; background: rgba(0,0,0,0.3); padding: 5px; border-radius: 15px; }
+        .tab-btn { 
+            padding: 10px 25px; border: none; border-radius: 12px; 
+            background: transparent; color: #94a3b8; font-weight: 700; cursor: pointer; transition: 0.3s;
+        }
+        .tab-btn.active { background: var(--primary); color: white; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4); }
+
+        .stat-group { display: flex; gap: 15px; }
+        .stat-item { background: rgba(255,255,255,0.1); padding: 10px 20px; border-radius: 15px; text-align: center; }
+        .stat-num { display: block; font-size: 20px; font-weight: 700; color: #facc15; }
+        .stat-label { font-size: 10px; text-transform: uppercase; opacity: 0.7; }
+
+        .layout { display: grid; grid-template-columns: 260px 1fr 400px; gap: 25px; height: 550px; }
+
+        /* Left Menu */
+        .sidebar { background: rgba(0,0,0,0.2); border-radius: 20px; padding: 15px; overflow-y: auto; }
+        .menu-item { 
+            padding: 12px 15px; margin-bottom: 8px; border-radius: 12px; cursor: pointer;
+            background: rgba(255,255,255,0.05); transition: 0.3s; font-weight: 600; font-size: 14px;
+            border: 1px solid transparent;
+        }
+        .menu-item:hover { background: rgba(255,255,255,0.1); }
+        .menu-item.active { background: rgba(99, 102, 241, 0.2); border-color: var(--primary); color: white; }
+
+        /* Image Display */
+        .preview-box { border-radius: 20px; overflow: hidden; position: relative; border: 1px solid rgba(255,255,255,0.1); }
+        .preview-box img { width: 100%; height: 100%; object-fit: cover; }
         
-        .q-box { padding: 15px; }
-        .sentence { font-size: 20px; font-weight: bold; margin-bottom: 20px; color: #000; }
-        .blank { color: var(--p); border-bottom: 2px solid var(--p); padding: 0 10px; }
+        /* Quiz Area */
+        .quiz-panel { display: flex; flex-direction: column; gap: 20px; }
+        .question-card { 
+            background: rgba(255,255,255,0.1); padding: 25px; border-radius: 20px; 
+            font-size: 22px; font-weight: 600; line-height: 1.5; border-left: 5px solid var(--primary);
+        }
+        .blank { color: #facc15; text-decoration: underline; font-weight: 700; }
+
+        .option-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .option-btn { 
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            padding: 18px; border-radius: 15px; color: white; font-weight: 700;
+            cursor: pointer; transition: 0.2s; text-align: center;
+        }
+        .option-btn:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px); }
         
-        .opts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .opt { padding: 15px; border: 2px solid #e2e8f0; border-radius: 10px; cursor: pointer; text-align: center; font-weight: bold; }
-        .correct { background: #22c55e !important; color: white; border-color: #16a34a; }
-        .wrong { background: #ef4444 !important; color: white; border-color: #b91c1c; }
-        
-        .ans-box { margin-top: 15px; padding: 15px; background: #f1f5f9; border-radius: 10px; display: none; }
-        .btn-next { width: 100%; padding: 15px; background: #1e293b; color: white; border: none; border-radius: 10px; cursor: pointer; margin-top: 10px; font-weight: bold; }
+        .correct { background: #22c55e !important; border-color: #4ade80 !important; }
+        .wrong { background: #ef4444 !important; border-color: #f87171 !important; }
+
+        .feedback { 
+            background: rgba(99, 102, 241, 0.2); padding: 20px; border-radius: 20px; 
+            display: none; animation: fadeIn 0.3s; border: 1px solid var(--primary);
+        }
+        @keyframes fadeIn { from {opacity: 0; transform: translateY(10px);} to {opacity: 1; transform: translateY(0);} }
+
+        .btn-action { 
+            width: 100%; padding: 18px; border-radius: 15px; border: none;
+            background: var(--primary); color: white; font-weight: 700; font-size: 16px;
+            cursor: pointer; margin-top: auto; box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        /* Config View */
+        #page-config textarea { 
+            width: 100%; height: 400px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 20px; padding: 20px; color: #818cf8; font-family: monospace; font-size: 14px;
+        }
     </style>
 </head>
 <body>
 
-<div class="card">
+<div class="glass-card">
     <div class="header">
-        <div>
-            <button class="nav-btn active" id="b-q" onclick="setTab('q')">HỌC TẬP</button>
-            <button class="nav-btn" id="b-c" onclick="setTab('c')">CÀI ĐẶT</button>
+        <div class="tab-group">
+            <button class="tab-btn active" id="btn-learn" onclick="switchPage('learn')">🚀 Học tập</button>
+            <button class="tab-btn" id="btn-config" onclick="switchPage('config')">⚙️ Cài đặt</button>
         </div>
-        <div style="font-weight: bold;">
-            🔥 Streak: <span id="s-streak">0</span> | Đã học: <span id="s-total">0</span>
+        <div class="stat-group">
+            <div class="stat-item"><span class="stat-num" id="val-streak">0</span><span class="stat-label">Streak</span></div>
+            <div class="stat-item"><span class="stat-num" id="val-total">0</span><span class="stat-label">Đã học</span></div>
         </div>
     </div>
 
-    <div id="p-q" class="main">
-        <div class="menu" id="menu"></div>
-        <div class="img-box"><img id="img" src=""></div>
-        <div class="q-box">
-            <div class="sentence" id="q-txt">Chưa có dữ liệu...</div>
-            <div class="opts" id="opts"></div>
-            <div class="ans-box" id="ans">
-                <strong id="ans-w"></strong>: <span id="ans-d"></span>
+    <div id="page-learn" class="layout">
+        <div class="sidebar" id="menu-list"></div>
+        <div class="preview-box">
+            <img id="quiz-img" src="" onerror="this.src='https://images.unsplash.com/photo-1541888946425-d81bb19480c5?w=800'">
+        </div>
+        <div class="quiz-panel">
+            <div class="question-card" id="quiz-text">Đang tải bài học...</div>
+            <div class="option-grid" id="option-grid"></div>
+            <div class="feedback" id="feedback-box">
+                <h3 id="fb-word" style="font-size:24px; margin-bottom:5px"></h3>
+                <p id="fb-def" style="opacity:0.8; font-size:16px"></p>
+                <button onclick="playAudio()" style="margin-top:10px; background:none; border:1px solid white; color:white; padding:5px 12px; border-radius:8px; cursor:pointer">🔊 Nghe phát âm</button>
             </div>
-            <button class="btn-next" id="btn-n" style="display:none" onclick="goNext()">TIẾP THEO ➔</button>
+            <button class="btn-action" id="btn-next" style="display:none" onclick="goNext()">TIẾP THEO ➔</button>
         </div>
     </div>
 
-    <div id="p-c" style="display:none">
-        <textarea id="inp" style="width:100%; height:300px; margin-bottom:10px;" placeholder="Dán JSON vào đây..."></textarea>
-        <button class="btn-next" style="background:var(--p)" onclick="doSave()">LƯU VÀ CHẠY LẠI</button>
-        <p style="color:red; margin-top:10px;">* Lưu ý: Nếu web vẫn lỗi, hãy nhấn Ctrl + F5.</p>
+    <div id="page-config" style="display:none; flex-direction:column; gap:20px">
+        <textarea id="json-input" placeholder="Dán mã JSON của bạn vào đây..."></textarea>
+        <button class="btn-action" onclick="saveData()">LƯU DỮ LIỆU & BẮT ĐẦU</button>
     </div>
 </div>
 
 <script>
-    let db = [], cur = 0, st = {total:0, day:"", streak:1};
+    let vocabulary = [], currentIdx = 0, userStats = {score: 0, day: "", streak: 0};
 
     window.onload = () => {
-        const d = localStorage.getItem('v_final');
-        const s = localStorage.getItem('v_st');
-        if(s) st = JSON.parse(s);
+        const d = localStorage.getItem('v_lux');
+        const s = localStorage.getItem('v_lux_st');
+        if(s) userStats = JSON.parse(s);
         
-        // Streak logic
+        // Cập nhật streak
         const today = new Date().toDateString();
-        if(st.day && st.day !== today) {
-            const gap = (new Date(today) - new Date(st.day)) / 86400000;
-            st.streak = (gap === 1) ? st.streak + 1 : 1;
+        if(userStats.day && userStats.day !== today) {
+            const gap = (new Date(today) - new Date(userStats.day)) / 86400000;
+            userStats.streak = (gap === 1) ? userStats.streak + 1 : 0;
         }
-        st.day = today;
+        userStats.day = today;
 
-        if(d) { db = JSON.parse(d); show(); } 
-        else { setTab('c'); }
-        updateStats();
+        if(d) { vocabulary = JSON.parse(d); renderApp(); } 
+        else { switchPage('config'); }
+        updateStatsUI();
     };
 
-    function show() {
-        if(!db.length) return;
-        const m = document.getElementById('menu'); m.innerHTML = "";
-        db.forEach((item, i) => {
-            const div = document.createElement('div');
-            div.className = `m-item ${i===cur?'active':''}`;
-            div.innerText = `${i+1}. ${item.word}`;
-            div.onclick = () => { cur=i; show(); };
-            m.appendChild(div);
-        });
-
-        const it = db[cur];
-        document.getElementById('img').src = it.img;
-        document.getElementById('q-txt').innerHTML = it.example.replace(new RegExp(it.word, 'gi'), '<span class="blank">_______</span>');
+    function renderApp() {
+        if(!vocabulary.length) return;
         
-        const oBox = document.getElementById('opts'); oBox.innerHTML = "";
-        let cs = [it.word];
-        while(cs.length < 4) {
-            let r = db[Math.floor(Math.random()*db.length)].word;
-            if(!cs.includes(r)) cs.push(r);
-        }
-        cs.sort(() => Math.random() - 0.5).forEach(c => {
-            const b = document.createElement('div'); b.className = 'opt'; b.innerText = c;
-            b.onclick = () => {
-                document.querySelectorAll('.opt').forEach(x => x.style.pointerEvents = 'none');
-                if(c === it.word) { b.classList.add('correct'); st.total++; }
-                else { 
-                    b.classList.add('wrong');
-                    document.querySelectorAll('.opt').forEach(x => { if(x.innerText === it.word) x.classList.add('correct'); });
-                }
-                document.getElementById('ans-w').innerText = it.word;
-                document.getElementById('ans-d').innerText = it.definition;
-                document.getElementById('ans').style.display = 'block';
-                document.getElementById('btn-n').style.display = 'block';
-                updateStats();
-                window.speechSynthesis.speak(new SpeechSynthesisUtterance(it.word));
-            };
-            oBox.appendChild(b);
+        // Render Sidebar Menu
+        const menu = document.getElementById('menu-list');
+        menu.innerHTML = "";
+        vocabulary.forEach((item, i) => {
+            const div = document.createElement('div');
+            div.className = `menu-item ${i === currentIdx ? 'active' : ''}`;
+            div.innerText = `${i+1}. ${item.word}`;
+            div.onclick = () => { currentIdx = i; renderApp(); };
+            menu.appendChild(div);
         });
-        document.getElementById('ans').style.display = 'none';
-        document.getElementById('btn-n').style.display = 'none';
+
+        const activeItem = vocabulary[currentIdx];
+        document.getElementById('quiz-img').src = activeItem.img;
+        document.getElementById('quiz-text').innerHTML = activeItem.example.replace(new RegExp(activeItem.word, 'gi'), '<span class="blank">_______</span>');
+
+        // Render Options
+        const grid = document.getElementById('option-grid');
+        grid.innerHTML = "";
+        let pool = [activeItem.word];
+        while(pool.length < 4) {
+            let r = vocabulary[Math.floor(Math.random()*vocabulary.length)].word;
+            if(!pool.includes(r)) pool.push(r);
+        }
+        pool.sort(() => Math.random() - 0.5).forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = opt;
+            btn.onclick = () => {
+                document.querySelectorAll('.option-btn').forEach(b => b.style.pointerEvents = 'none');
+                if(opt === activeItem.word) {
+                    btn.classList.add('correct');
+                    userStats.score++;
+                } else {
+                    btn.classList.add('wrong');
+                    document.querySelectorAll('.option-btn').forEach(b => {
+                        if(b.innerText === activeItem.word) b.classList.add('correct');
+                    });
+                }
+                document.getElementById('fb-word').innerText = activeItem.word;
+                document.getElementById('fb-def').innerText = activeItem.definition;
+                document.getElementById('feedback-box').style.display = 'block';
+                document.getElementById('btn-next').style.display = 'block';
+                updateStatsUI();
+                playAudio();
+            };
+            grid.appendChild(btn);
+        });
+
+        document.getElementById('feedback-box').style.display = 'none';
+        document.getElementById('btn-next').style.display = 'none';
     }
 
-    function updateStats() {
-        document.getElementById('s-total').innerText = st.total;
-        document.getElementById('s-streak').innerText = st.streak;
-        localStorage.setItem('v_st', JSON.stringify(st));
+    function updateStatsUI() {
+        document.getElementById('val-total').innerText = userStats.score;
+        document.getElementById('val-streak').innerText = userStats.streak || 1;
+        localStorage.setItem('v_lux_st', JSON.stringify(userStats));
     }
-    function goNext() { cur = (cur + 1) % db.length; show(); }
-    function setTab(t) {
-        document.getElementById('p-q').style.display = t==='q'?'grid':'none';
-        document.getElementById('p-c').style.display = t==='c'?'block':'none';
-        document.getElementById('b-q').className = t==='q'?'nav-btn active':'nav-btn';
-        document.getElementById('b-c').className = t==='c'?'nav-btn active':'nav-btn';
+
+    function playAudio() {
+        const msg = new SpeechSynthesisUtterance(vocabulary[currentIdx].word);
+        msg.lang = 'en-US'; window.speechSynthesis.speak(msg);
     }
-    function doSave() {
-        const val = document.getElementById('inp').value;
-        if(val) { localStorage.setItem('v_final', val); location.reload(); }
+
+    function goNext() { currentIdx = (currentIdx + 1) % vocabulary.length; renderApp(); }
+
+    function switchPage(p) {
+        document.getElementById('page-learn').style.display = p === 'learn' ? 'grid' : 'none';
+        document.getElementById('page-config').style.display = p === 'config' ? 'flex' : 'none';
+        document.getElementById('btn-learn').classList.toggle('active', p === 'learn');
+        document.getElementById('btn-config').classList.toggle('active', p === 'config');
+    }
+
+    function saveData() {
+        const val = document.getElementById('json-input').value;
+        if(val) { localStorage.setItem('v_lux', val); location.reload(); }
     }
 </script>
 </body>
