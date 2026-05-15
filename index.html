@@ -3,45 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Học Từ Vựng Xây Dựng - Cloze Test</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <title>Học Từ Vựng Xây Dựng - Pro Max</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --p: #6366f1; --g: rgba(255, 255, 255, 0.15); --border: rgba(255, 255, 255, 0.3); }
+        :root { --p: #4f46e5; --text-main: #000; --bg-glass: rgba(255, 255, 255, 0.95); }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-        body { 
-            background: #1a1a2e url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80') no-repeat center center fixed; 
-            background-size: cover; min-height: 100vh; display: flex; justify-content: center; align-items: center; color: #fff; 
-        }
-        .app-card { width: 95%; max-width: 1000px; background: var(--g); backdrop-filter: blur(25px); border-radius: 30px; padding: 25px; border: 1px solid var(--border); box-shadow: 0 25px 50px rgba(0,0,0,0.3); }
+        body { background: #0f172a url('https://images.unsplash.com/photo-1487958449943-2429e8be8625?q=80&w=2000') no-repeat center center fixed; background-size: cover; min-height: 100vh; display: flex; justify-content: center; align-items: center; }
         
-        /* Header Stats */
-        .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-        .stats { display: flex; gap: 15px; }
-        .stat-box { background: rgba(0,0,0,0.2); padding: 8px 15px; border-radius: 12px; border: 1px solid var(--border); text-align: center; }
-        .stat-val { font-weight: bold; color: var(--p); display: block; font-size: 18px; }
-        .stat-lbl { font-size: 10px; text-transform: uppercase; opacity: 0.7; }
-
-        .nav-btn { padding: 10px 20px; border: none; border-radius: 12px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; }
-        .nav-btn.active { background: var(--p); font-weight: bold; }
-
-        /* Layout Ngang */
-        .quiz-container { display: flex; gap: 30px; align-items: stretch; }
-        .quiz-left { flex: 1; position: relative; }
-        .q-img { width: 100%; height: 400px; object-fit: cover; border-radius: 20px; border: 1px solid var(--border); }
+        .app-card { width: 98%; max-width: 1200px; background: var(--bg-glass); border-radius: 24px; padding: 25px; border: 2px solid #fff; box-shadow: 0 25px 50px rgba(0,0,0,0.6); display: flex; flex-direction: column; gap: 20px; }
         
-        .quiz-right { flex: 1.2; display: flex; flex-direction: column; justify-content: center; }
-        .sentence-box { font-size: 22px; line-height: 1.5; margin-bottom: 25px; background: rgba(0,0,0,0.1); padding: 20px; border-radius: 15px; border-left: 5px solid var(--p); }
-        .blank { color: var(--p); font-weight: bold; text-decoration: underline; padding: 0 5px; }
+        .header-top { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; }
+        .stats { display: flex; gap: 10px; }
+        .stat-box { background: #1e293b; padding: 8px 15px; border-radius: 12px; text-align: center; color: #fff; min-width: 100px; }
+        .stat-val { font-weight: 900; color: #818cf8; font-size: 20px; display: block; }
+        .stat-lbl { font-size: 9px; font-weight: 700; text-transform: uppercase; }
 
-        .opt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .opt-item { background: rgba(255,255,255,0.1); padding: 15px; border-radius: 15px; cursor: pointer; border: 1px solid var(--border); transition: 0.2s; text-align: center; }
-        .opt-item:hover { background: rgba(255,255,255,0.2); }
+        .nav-btn { padding: 10px 20px; border: none; border-radius: 10px; background: #cbd5e1; color: #1e293b; font-weight: 900; cursor: pointer; }
+        .nav-btn.active { background: var(--p); color: #fff; }
+
+        /* Bố cục 3 cột: Menu - Ảnh - Câu hỏi */
+        .main-layout { display: flex; gap: 20px; height: 550px; }
         
-        .correct { background: #22c55e !important; border-color: #22c55e; }
-        .wrong { background: #ef4444 !important; border-color: #ef4444; }
+        /* Cột 1: Danh sách từ vựng */
+        .vocab-menu { width: 220px; background: #f1f5f9; border-radius: 15px; padding: 10px; overflow-y: auto; border: 1px solid #e2e8f0; }
+        .menu-item { padding: 12px; margin-bottom: 8px; background: #fff; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 14px; border: 2px solid transparent; transition: 0.2s; color: #334155; }
+        .menu-item:hover { border-color: var(--p); }
+        .menu-item.active { background: var(--p); color: #fff; }
 
-        #expl-area { margin-top: 20px; padding: 15px; border-radius: 15px; background: rgba(255,255,255,0.1); display: none; }
-        .btn-next { width: 100%; padding: 18px; border: none; border-radius: 15px; background: #fff; color: #000; font-weight: bold; cursor: pointer; margin-top: 15px; }
+        /* Cột 2: Ảnh */
+        .quiz-left { flex: 1; }
+        .q-img { width: 100%; height: 100%; object-fit: cover; border-radius: 15px; border: 4px solid #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        
+        /* Cột 3: Nội dung câu hỏi */
+        .quiz-right { flex: 1.2; display: flex; flex-direction: column; }
+        .sentence-box { font-size: 22px; font-weight: 700; line-height: 1.5; margin-bottom: 20px; background: #fff; padding: 20px; border-radius: 15px; border-left: 8px solid var(--p); color: #000; }
+        .blank { color: var(--p); font-weight: 900; text-decoration: underline; }
+
+        .opt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .opt-item { background: #f8fafc; padding: 15px; border-radius: 12px; cursor: pointer; border: 2px solid #e2e8f0; text-align: center; font-weight: 900; color: #1e293b; transition: 0.2s; }
+        .opt-item:hover { border-color: var(--p); background: #fff; }
+        
+        .correct { background: #16a34a !important; color: #fff !important; border-color: #15803d !important; }
+        .wrong { background: #dc2626 !important; color: #fff !important; border-color: #b91c1c !important; }
+
+        #expl-area { margin-top: 15px; padding: 20px; border-radius: 15px; background: #f1f5f9; border: 2px solid #cbd5e1; display: none; color: #000; }
+        .speaker-btn { background: var(--p); color: white; border: none; padding: 5px 12px; border-radius: 8px; cursor: pointer; font-size: 16px; margin-left: 10px; }
+
+        .btn-next { width: 100%; padding: 18px; border: none; border-radius: 12px; background: #000; color: #fff; font-weight: 900; cursor: pointer; margin-top: 10px; font-size: 18px; }
     </style>
 </head>
 <body>
@@ -49,62 +57,100 @@
 <div class="app-card">
     <div class="header-top">
         <div style="display:flex; gap:10px">
-            <button class="nav-btn active" onclick="tab('quiz')">✍️ Học tập</button>
-            <button class="nav-btn" onclick="tab('conf')">⚙️ Cài đặt</button>
+            <button class="nav-btn active" onclick="tab('quiz')">✍️ HỌC TẬP</button>
+            <button class="nav-btn" onclick="tab('conf')">⚙️ CÀI ĐẶT</button>
         </div>
         <div class="stats">
-            <div class="stat-box"><span class="stat-val" id="st-learned">0</span><span class="stat-lbl">Đã học</span></div>
-            <div class="stat-box"><span class="stat-val" id="st-accuracy">0%</span><span class="stat-lbl">Chính xác</span></div>
+            <div class="stat-box"><span class="stat-val" id="st-streak">1</span><span class="stat-lbl">🔥 NGÀY</span></div>
+            <div class="stat-box"><span class="stat-val" id="st-total">0</span><span class="stat-lbl">TỪ ĐÃ HỌC</span></div>
         </div>
     </div>
 
     <div id="quiz-sec">
-        <div class="quiz-container">
+        <div class="main-layout">
+            <div class="vocab-menu" id="vocab-menu"></div>
+            
             <div class="quiz-left">
-                <img id="q-img" class="q-img" src="">
+                <img id="q-img" class="q-img" src="" onerror="this.src='https://images.unsplash.com/photo-1541888946425-d81bb19480c5?q=80&w=1000'">
             </div>
+            
             <div class="quiz-right">
-                <div class="sentence-box" id="q-sentence">Đang tải câu hỏi...</div>
+                <div class="sentence-box" id="q-sentence">Chọn từ ở menu bên trái để bắt đầu!</div>
                 <div class="opt-grid" id="opt-box"></div>
                 <div id="expl-area">
-                    <h3 id="correct-word" style="color:var(--p)"></h3>
-                    <p id="word-def" style="opacity:0.9; margin-top:5px"></p>
+                    <div style="display:flex; align-items:center; margin-bottom:5px;">
+                        <h3 id="correct-word" style="font-size:24px; font-weight:900;"></h3>
+                        <button class="speaker-btn" onclick="speakAgain()">🔊 Nghe lại</button>
+                    </div>
+                    <p id="word-def" style="font-weight: 700; color: #475569;"></p>
                 </div>
-                <button id="btn-next" class="btn-next" style="display:none" onclick="next()">Tiếp theo ➔</button>
+                <button id="btn-next" class="btn-next" style="display:none" onclick="next()">TIẾP THEO ➔</button>
             </div>
         </div>
     </div>
 
     <div id="conf-sec" style="display:none">
-        <textarea id="json-input" style="width:100%; height:300px; background:rgba(0,0,0,0.2); color:#fff; padding:15px; border-radius:15px; margin-bottom:15px;" placeholder="Dán JSON từ vựng của bạn vào đây..."></textarea>
-        <button class="nav-btn active" style="width:100%" onclick="save()">💾 Cập nhật bộ từ vựng</button>
+        <textarea id="json-input" style="width:100%; height:350px; padding:20px; border-radius:15px; border:3px solid var(--p);" placeholder="Dán JSON vào đây..."></textarea>
+        <button class="btn-next" style="background:var(--p)" onclick="save()">LƯU DỮ LIỆU</button>
     </div>
 </div>
 
 <script>
     let vocab = [], curIdx = 0;
-    let stats = { total: 0, right: 0 };
+    let stats = { total: 0, lastDate: "", streak: 1 };
 
     window.onload = () => {
         const d = localStorage.getItem('v_data');
         const s = localStorage.getItem('v_stats');
         if(s) stats = JSON.parse(s);
-        if(d) { vocab = JSON.parse(d); render(); } else tab('conf');
-        updateStats();
+        
+        handleStreak(); // Kiểm tra ngày học
+        
+        if(d) { 
+            vocab = JSON.parse(d); 
+            buildMenu();
+            render(); 
+        } else tab('conf');
+        
+        updateStatsUI();
     };
 
-    function tab(t) {
-        document.getElementById('quiz-sec').style.display = t==='quiz'?'block':'none';
-        document.getElementById('conf-sec').style.display = t==='conf'?'block':'none';
+    function handleStreak() {
+        const today = new Date().toDateString();
+        if (stats.lastDate === "") {
+            stats.lastDate = today;
+            stats.streak = 1;
+        } else if (stats.lastDate !== today) {
+            const last = new Date(stats.lastDate);
+            const diff = (new Date(today) - last) / (1000 * 60 * 60 * 24);
+            if (diff === 1) stats.streak++; // Học liên tiếp
+            else if (diff > 1) stats.streak = 1; // Bị ngắt quãng
+            stats.lastDate = today;
+        }
+        localStorage.setItem('v_stats', JSON.stringify(stats));
+    }
+
+    function buildMenu() {
+        const menu = document.getElementById('vocab-menu');
+        menu.innerHTML = "";
+        vocab.forEach((item, index) => {
+            const div = document.createElement('div');
+            div.className = `menu-item ${index === curIdx ? 'active' : ''}`;
+            div.innerText = `${index + 1}. ${item.word}`;
+            div.onclick = () => { curIdx = index; render(); };
+            menu.appendChild(div);
+        });
     }
 
     function render() {
+        if(!vocab.length) return;
         const item = vocab[curIdx];
+        buildMenu(); // Cập nhật trạng thái active trên menu
+
         const sentence = item.example || item.explanation || "";
-        // Thuật toán tạo lỗ trống: Thay thế từ khóa bằng ___
-        const clozeSentence = sentence.replace(new RegExp(item.word, 'gi'), '<span class="blank">_______</span>');
+        const cloze = sentence.replace(new RegExp(item.word, 'gi'), '<span class="blank">_______</span>');
         
-        document.getElementById('q-sentence').innerHTML = clozeSentence;
+        document.getElementById('q-sentence').innerHTML = cloze;
         document.getElementById('q-img').src = item.image || item.img;
         
         const box = document.getElementById('opt-box'); box.innerHTML = '';
@@ -126,44 +172,43 @@
 
     function check(selected, correct, el) {
         document.querySelectorAll('.opt-item').forEach(b => b.style.pointerEvents = 'none');
-        stats.total++;
+        const item = vocab[curIdx];
         if(selected.toLowerCase() === correct.toLowerCase()) {
             el.classList.add('correct');
-            stats.right++;
+            stats.total++;
         } else {
             el.classList.add('wrong');
-            document.querySelectorAll('.opt-item').forEach(b => { if(b.innerText.toLowerCase() === correct.toLowerCase()) b.classList.add('correct'); });
+            document.querySelectorAll('.opt-item').forEach(b => { 
+                if(b.innerText.toLowerCase() === correct.toLowerCase()) b.classList.add('correct'); 
+            });
         }
-        
-        const item = vocab[curIdx];
-        document.getElementById('correct-word').innerText = item.word + " " + (item.ipa || "");
-        document.getElementById('word-def').innerText = item.definition;
+        document.getElementById('correct-word').innerText = item.word;
+        document.getElementById('word-def').innerText = "Nghĩa: " + item.definition;
         document.getElementById('expl-area').style.display = 'block';
         document.getElementById('btn-next').style.display = 'block';
-        
-        updateStats();
-        const u = new SpeechSynthesisUtterance(item.word); u.lang = 'en-US'; speechSynthesis.speak(u);
+        updateStatsUI();
+        speakAgain();
     }
 
-    function updateStats() {
-        document.getElementById('st-learned').innerText = stats.total;
-        const acc = stats.total === 0 ? 0 : Math.round((stats.right / stats.total) * 100);
-        document.getElementById('st-accuracy').innerText = acc + "%";
+    function updateStatsUI() {
+        document.getElementById('st-total').innerText = stats.total;
+        document.getElementById('st-streak').innerText = stats.streak;
         localStorage.setItem('v_stats', JSON.stringify(stats));
     }
 
-    function next() {
-        // Duy trì sự lặp lại: Chọn ngẫu nhiên hoặc theo thứ tự
-        curIdx = (curIdx + 1) % vocab.length;
-        render();
+    function speakAgain() {
+        const u = new SpeechSynthesisUtterance(vocab[curIdx].word);
+        u.lang = 'en-US'; speechSynthesis.speak(u);
     }
 
+    function next() { curIdx = (curIdx + 1) % vocab.length; render(); }
+    function tab(t) {
+        document.getElementById('quiz-sec').style.display = t==='quiz'?'block':'none';
+        document.getElementById('conf-sec').style.display = t==='conf'?'block':'none';
+    }
     function save() {
-        try {
-            const d = JSON.parse(document.getElementById('json-input').value);
-            localStorage.setItem('v_data', JSON.stringify(d));
-            location.reload();
-        } catch(e) { alert("Lỗi JSON!"); }
+        localStorage.setItem('v_data', document.getElementById('json-input').value);
+        location.reload();
     }
 </script>
 </body>
