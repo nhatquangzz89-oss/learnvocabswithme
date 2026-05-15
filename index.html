@@ -1,204 +1,149 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Học Từ Vựng Xây Dựng - Final Stable</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>Học Từ Vựng - Fix Triệt Để</title>
     <style>
-        :root { --p: #4f46e5; --bg: #f8fafc; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-        body { background: #0f172a url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2000') no-repeat center center fixed; background-size: cover; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
-        .app-card { width: 100%; max-width: 1200px; background: rgba(255,255,255,0.98); border-radius: 20px; padding: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); display: flex; flex-direction: column; gap: 20px; min-height: 650px; }
-        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; }
-        .nav-btn { padding: 12px 24px; border: none; border-radius: 10px; background: #e2e8f0; color: #1e293b; font-weight: 800; cursor: pointer; }
-        .nav-btn.active { background: var(--p); color: #fff; }
-        .stats { display: flex; gap: 10px; }
-        .stat-box { background: #1e293b; padding: 8px 20px; border-radius: 10px; color: #fff; text-align: center; }
-        .stat-val { font-weight: 900; color: #818cf8; font-size: 20px; display: block; }
-        .stat-lbl { font-size: 10px; text-transform: uppercase; }
-
-        .main-content { display: grid; grid-template-columns: 250px 1fr 1.2fr; gap: 25px; flex-grow: 1; height: 520px; }
-        .menu-list { background: #f1f5f9; border-radius: 15px; padding: 10px; overflow-y: auto; border: 1px solid #cbd5e1; }
-        .menu-item { padding: 12px; margin-bottom: 8px; background: #fff; border-radius: 8px; cursor: pointer; font-weight: 700; border: 2px solid transparent; font-size: 14px; transition: 0.2s; }
-        .menu-item.active { border-color: var(--p); background: #eef2ff; color: var(--p); }
+        :root { --p: #4f46e5; }
+        body { font-family: sans-serif; background: #0f172a; color: #334155; display: flex; justify-content: center; padding: 20px; }
+        .card { width: 100%; max-width: 1000px; background: white; border-radius: 15px; padding: 20px; min-height: 500px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .header { display: flex; justify-content: space-between; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #eee; }
+        .nav-btn { padding: 10px 20px; cursor: pointer; border-radius: 8px; border: none; font-weight: bold; background: #e2e8f0; }
+        .nav-btn.active { background: var(--p); color: white; }
         
-        .image-box { border-radius: 15px; overflow: hidden; border: 4px solid #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.1); background: #eee; }
-        .image-box img { width: 100%; height: 100%; object-fit: cover; }
-
-        .quiz-box { display: flex; flex-direction: column; gap: 15px; }
-        .question { font-size: 24px; font-weight: 800; color: #000; background: #fff; padding: 25px; border-radius: 15px; border-left: 10px solid var(--p); line-height: 1.5; }
-        .blank { color: var(--p); text-decoration: underline; }
+        .main { display: grid; grid-template-columns: 200px 1fr 1.2fr; gap: 20px; }
+        .menu { height: 450px; overflow-y: auto; background: #f8fafc; padding: 10px; border-radius: 10px; border: 1px solid #ddd; }
+        .m-item { padding: 10px; margin-bottom: 5px; background: white; border-radius: 5px; cursor: pointer; font-size: 13px; border: 1px solid #eee; }
+        .m-item.active { border-color: var(--p); color: var(--p); font-weight: bold; }
         
-        .options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .opt { background: #fff; padding: 18px; border-radius: 12px; border: 2px solid #e2e8f0; cursor: pointer; text-align: center; font-weight: 800; transition: 0.2s; font-size: 16px; }
-        .opt:hover { border-color: var(--p); transform: translateY(-2px); }
-        .correct { background: #22c55e !important; color: #fff !important; border-color: #15803d !important; }
-        .wrong { background: #ef4444 !important; color: #fff !important; border-color: #b91c1c !important; }
-
-        .result-panel { background: #f8fafc; padding: 20px; border-radius: 15px; border: 2px solid #cbd5e1; display: none; }
-        .speak-btn { background: var(--p); color: #fff; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 800; margin-left: 10px; }
-        .next-btn { width: 100%; padding: 20px; background: #1e293b; color: #fff; border: none; border-radius: 12px; font-weight: 900; font-size: 18px; cursor: pointer; margin-top: auto; }
+        .img-box { height: 300px; background: #eee; border-radius: 10px; overflow: hidden; }
+        .img-box img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .q-box { padding: 15px; }
+        .sentence { font-size: 20px; font-weight: bold; margin-bottom: 20px; color: #000; }
+        .blank { color: var(--p); border-bottom: 2px solid var(--p); padding: 0 10px; }
+        
+        .opts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .opt { padding: 15px; border: 2px solid #e2e8f0; border-radius: 10px; cursor: pointer; text-align: center; font-weight: bold; }
+        .correct { background: #22c55e !important; color: white; border-color: #16a34a; }
+        .wrong { background: #ef4444 !important; color: white; border-color: #b91c1c; }
+        
+        .ans-box { margin-top: 15px; padding: 15px; background: #f1f5f9; border-radius: 10px; display: none; }
+        .btn-next { width: 100%; padding: 15px; background: #1e293b; color: white; border: none; border-radius: 10px; cursor: pointer; margin-top: 10px; font-weight: bold; }
     </style>
 </head>
 <body>
 
-<div class="app-card">
+<div class="card">
     <div class="header">
-        <div style="display:flex; gap:10px">
-            <button class="nav-btn active" id="btn-quiz" onclick="showTab('quiz')">✍️ HỌC TẬP</button>
-            <button class="nav-btn" id="btn-conf" onclick="showTab('conf')">⚙️ CÀI ĐẶT</button>
+        <div>
+            <button class="nav-btn active" id="b-q" onclick="setTab('q')">HỌC TẬP</button>
+            <button class="nav-btn" id="b-c" onclick="setTab('c')">CÀI ĐẶT</button>
         </div>
-        <div class="stats">
-            <div class="stat-box"><span class="stat-val" id="streak-val">1</span><span class="stat-lbl">STREAK</span></div>
-            <div class="stat-box"><span class="stat-val" id="score-val">0</span><span class="stat-lbl">TỪ ĐÃ HỌC</span></div>
+        <div style="font-weight: bold;">
+            🔥 Streak: <span id="s-streak">0</span> | Đã học: <span id="s-total">0</span>
         </div>
     </div>
 
-    <div id="quiz-page" class="main-content">
-        <div class="menu-list" id="side-menu"></div>
-        <div class="image-box">
-            <img id="main-img" src="" onerror="this.src='https://images.unsplash.com/photo-1541888946425-d81bb19480c5?w=800'">
-        </div>
-        <div class="quiz-box">
-            <div class="question" id="main-q">Dán dữ liệu JSON vào phần cài đặt để bắt đầu!</div>
-            <div class="options" id="main-opts"></div>
-            <div class="result-panel" id="result-box">
-                <div style="display:flex; align-items:center; margin-bottom:10px">
-                    <h2 id="res-word" style="font-size:28px; font-weight:900;"></h2>
-                    <button class="speak-btn" onclick="speak()">🔊 NGHE LẠI</button>
-                </div>
-                <p id="res-def" style="font-size:18px; font-weight:700; color:#475569"></p>
+    <div id="p-q" class="main">
+        <div class="menu" id="menu"></div>
+        <div class="img-box"><img id="img" src=""></div>
+        <div class="q-box">
+            <div class="sentence" id="q-txt">Chưa có dữ liệu...</div>
+            <div class="opts" id="opts"></div>
+            <div class="ans-box" id="ans">
+                <strong id="ans-w"></strong>: <span id="ans-d"></span>
             </div>
-            <button class="next-btn" id="next-btn" style="display:none" onclick="goNext()">TIẾP THEO ➔</button>
+            <button class="btn-next" id="btn-n" style="display:none" onclick="goNext()">TIẾP THEO ➔</button>
         </div>
     </div>
 
-    <div id="conf-page" style="display:none; flex-direction:column; gap:15px; flex-grow:1;">
-        <textarea id="json-box" style="width:100%; flex-grow:1; border-radius:15px; padding:20px; font-family:monospace; border:3px solid var(--p)" placeholder="Dán JSON vào đây..."></textarea>
-        <button class="next-btn" style="background:var(--p)" onclick="saveData()">LƯU DỮ LIỆU & LÀM MỚI</button>
+    <div id="p-c" style="display:none">
+        <textarea id="inp" style="width:100%; height:300px; margin-bottom:10px;" placeholder="Dán JSON vào đây..."></textarea>
+        <button class="btn-next" style="background:var(--p)" onclick="doSave()">LƯU VÀ CHẠY LẠI</button>
+        <p style="color:red; margin-top:10px;">* Lưu ý: Nếu web vẫn lỗi, hãy nhấn Ctrl + F5.</p>
     </div>
 </div>
 
 <script>
-    let data = [], idx = 0, stats = { score: 0, day: "", streak: 1 };
+    let db = [], cur = 0, st = {total:0, day:"", streak:1};
 
     window.onload = () => {
-        const savedData = localStorage.getItem('v3_data');
-        const savedStats = localStorage.getItem('v3_stats');
-        if(savedStats) stats = JSON.parse(savedStats);
+        const d = localStorage.getItem('v_final');
+        const s = localStorage.getItem('v_st');
+        if(s) st = JSON.parse(s);
         
-        checkStreak();
-
-        if(savedData && savedData !== "[]") {
-            data = JSON.parse(savedData);
-            loadQuestion();
-        } else {
-            showTab('conf');
+        // Streak logic
+        const today = new Date().toDateString();
+        if(st.day && st.day !== today) {
+            const gap = (new Date(today) - new Date(st.day)) / 86400000;
+            st.streak = (gap === 1) ? st.streak + 1 : 1;
         }
+        st.day = today;
+
+        if(d) { db = JSON.parse(d); show(); } 
+        else { setTab('c'); }
+        updateStats();
     };
 
-    function checkStreak() {
-        const today = new Date().toDateString();
-        if(stats.day && stats.day !== today) {
-            const last = new Date(stats.day);
-            const diff = (new Date(today) - last) / (1000*60*60*24);
-            stats.streak = (diff === 1) ? stats.streak + 1 : 1;
-        }
-        stats.day = today;
-        updateUI();
-    }
-
-    function loadQuestion() {
-        if(!data.length) return;
-        
-        // Cập nhật Menu
-        const menu = document.getElementById('side-menu');
-        menu.innerHTML = "";
-        data.forEach((item, i) => {
-            const d = document.createElement('div');
-            d.className = `menu-item ${i === idx ? 'active' : ''}`;
-            d.innerText = `${i+1}. ${item.word}`;
-            d.onclick = () => { idx = i; loadQuestion(); };
-            menu.appendChild(d);
+    function show() {
+        if(!db.length) return;
+        const m = document.getElementById('menu'); m.innerHTML = "";
+        db.forEach((item, i) => {
+            const div = document.createElement('div');
+            div.className = `m-item ${i===cur?'active':''}`;
+            div.innerText = `${i+1}. ${item.word}`;
+            div.onclick = () => { cur=i; show(); };
+            m.appendChild(div);
         });
 
-        const item = data[idx];
-        document.getElementById('main-img').src = item.img || item.image;
+        const it = db[cur];
+        document.getElementById('img').src = it.img;
+        document.getElementById('q-txt').innerHTML = it.example.replace(new RegExp(it.word, 'gi'), '<span class="blank">_______</span>');
         
-        // Tạo câu hỏi đục lỗ
-        const text = item.example || item.explanation || "";
-        document.getElementById('main-q').innerHTML = text.replace(new RegExp(item.word, 'gi'), '<span class="blank">_______</span>');
-
-        // Tạo đáp án
-        const optsBox = document.getElementById('main-opts');
-        optsBox.innerHTML = "";
-        let choices = [item.word];
-        while(choices.length < 4 && choices.length < data.length) {
-            let r = data[Math.floor(Math.random()*data.length)].word;
-            if(!choices.includes(r)) choices.push(r);
+        const oBox = document.getElementById('opts'); oBox.innerHTML = "";
+        let cs = [it.word];
+        while(cs.length < 4) {
+            let r = db[Math.floor(Math.random()*db.length)].word;
+            if(!cs.includes(r)) cs.push(r);
         }
-        choices.sort(() => Math.random() - 0.5);
-
-        choices.forEach(c => {
-            const b = document.createElement('div');
-            b.className = 'opt';
-            b.innerText = c;
-            b.onclick = () => handleCheck(c, item.word, b);
-            optsBox.appendChild(b);
+        cs.sort(() => Math.random() - 0.5).forEach(c => {
+            const b = document.createElement('div'); b.className = 'opt'; b.innerText = c;
+            b.onclick = () => {
+                document.querySelectorAll('.opt').forEach(x => x.style.pointerEvents = 'none');
+                if(c === it.word) { b.classList.add('correct'); st.total++; }
+                else { 
+                    b.classList.add('wrong');
+                    document.querySelectorAll('.opt').forEach(x => { if(x.innerText === it.word) x.classList.add('correct'); });
+                }
+                document.getElementById('ans-w').innerText = it.word;
+                document.getElementById('ans-d').innerText = it.definition;
+                document.getElementById('ans').style.display = 'block';
+                document.getElementById('btn-n').style.display = 'block';
+                updateStats();
+                window.speechSynthesis.speak(new SpeechSynthesisUtterance(it.word));
+            };
+            oBox.appendChild(b);
         });
-
-        document.getElementById('result-box').style.display = 'none';
-        document.getElementById('next-btn').style.display = 'none';
+        document.getElementById('ans').style.display = 'none';
+        document.getElementById('btn-n').style.display = 'none';
     }
 
-    function handleCheck(chosen, correct, el) {
-        document.querySelectorAll('.opt').forEach(o => o.style.pointerEvents = 'none');
-        if(chosen.toLowerCase() === correct.toLowerCase()) {
-            el.classList.add('correct');
-            stats.score++;
-        } else {
-            el.classList.add('wrong');
-            document.querySelectorAll('.opt').forEach(o => {
-                if(o.innerText.toLowerCase() === correct.toLowerCase()) o.classList.add('correct');
-            });
-        }
-        
-        document.getElementById('res-word').innerText = data[idx].word;
-        document.getElementById('res-def').innerText = "Nghĩa: " + data[idx].definition;
-        document.getElementById('result-box').style.display = 'block';
-        document.getElementById('next-btn').style.display = 'block';
-        updateUI();
-        speak();
+    function updateStats() {
+        document.getElementById('s-total').innerText = st.total;
+        document.getElementById('s-streak').innerText = st.streak;
+        localStorage.setItem('v_st', JSON.stringify(st));
     }
-
-    function updateUI() {
-        document.getElementById('score-val').innerText = stats.score;
-        document.getElementById('streak-val').innerText = stats.streak;
-        localStorage.setItem('v3_stats', JSON.stringify(stats));
+    function goNext() { cur = (cur + 1) % db.length; show(); }
+    function setTab(t) {
+        document.getElementById('p-q').style.display = t==='q'?'grid':'none';
+        document.getElementById('p-c').style.display = t==='c'?'block':'none';
+        document.getElementById('b-q').className = t==='q'?'nav-btn active':'nav-btn';
+        document.getElementById('b-c').className = t==='c'?'nav-btn active':'nav-btn';
     }
-
-    function speak() {
-        const u = new SpeechSynthesisUtterance(data[idx].word);
-        u.lang = 'en-US'; window.speechSynthesis.speak(u);
-    }
-
-    function goNext() { idx = (idx + 1) % data.length; loadQuestion(); }
-
-    function showTab(t) {
-        document.getElementById('quiz-page').style.display = (t === 'quiz') ? 'grid' : 'none';
-        document.getElementById('conf-page').style.display = (t === 'conf') ? 'flex' : 'none';
-        document.getElementById('btn-quiz').classList.toggle('active', t === 'quiz');
-        document.getElementById('btn-conf').classList.toggle('active', t === 'conf');
-    }
-
-    function saveData() {
-        const raw = document.getElementById('json-box').value;
-        if(raw) {
-            localStorage.setItem('v3_data', raw);
-            location.reload();
-        }
+    function doSave() {
+        const val = document.getElementById('inp').value;
+        if(val) { localStorage.setItem('v_final', val); location.reload(); }
     }
 </script>
 </body>
