@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Học Từ Vựng Xây Dựng - Nhật Quang</title>
+    <style>
+        :root { --p: #6366f1; --g: rgba(255,255,255,0.15); }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+        body { background: #1a1a2e url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80') no-repeat center center fixed; background-size: cover; min-height: 100vh; display: flex; justify-content: center; align-items: center; color: #fff; }
+        .card { width: 90%; max-width: 450px; background: var(--g); backdrop-filter: blur(20px); border-radius: 25px; padding: 25px; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+        .nav { display: flex; gap: 10px; margin-bottom: 20px; }
+        .nav-btn { flex: 1; padding: 10px; border: none; border-radius: 12px; background: rgba(255,255,255,0.1); color: #fff; cursor: pointer; }
+        .nav-btn.active { background: var(--p); font-weight: bold; }
+        .q-img { width: 100%; height: 180px; object-fit: cover; border-radius: 15px; margin-bottom: 15px; background: #000; }
+        .opt { background: rgba(255,255,255,0.1); padding: 12px; border-radius: 12px; margin-top: 10px; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); transition: 0.2s; }
+        .opt:hover { background: rgba(255,255,255,0.2); }
+        .correct { background: #22c55e !important; }
+        .wrong { background: #ef4444 !important; }
+        textarea { width: 100%; height: 200px; background: rgba(0,0,0,0.3); color: #fff; padding: 15px; border-radius: 15px; border: 1px solid var(--p); margin-bottom: 15px; }
+        .btn-save { width: 100%; padding: 15px; border: none; border-radius: 15px; background: var(--p); color: #fff; font-weight: bold; cursor: pointer; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <div class="nav">
+        <button class="nav-btn active" onclick="tab('quiz')">✍️ Học tập</button>
+        <button class="nav-btn" onclick="tab('conf')">⚙️ Cài đặt</button>
+    </div>
+    <div id="quiz-sec">
+        <img id="img" class="q-img" src="">
+        <h2 id="word" style="text-align:center">Đang chờ dữ liệu...</h2>
+        <div id="opts"></div>
+        <button id="next" style="display:none; width:100%; margin-top:15px; padding:10px; border-radius:10px; border:none; background:#fff; color:#000; font-weight:bold; cursor:pointer;" onclick="goNext()">Tiếp theo ➔</button>
+    </div>
+    <div id="conf-sec" style="display:none">
+        <textarea id="inp" placeholder="Dán mã JSON vào đây..."></textarea>
+        <button class="btn-save" onclick="save()">💾 Lưu dữ liệu</button>
+    </div>
+</div>
+<script>
+    let data = [], cur = 0;
+    window.onload = () => {
+        const s = localStorage.getItem('v_data');
+        if(s) { data = JSON.parse(s); cur = parseInt(localStorage.getItem('v_cur')||0); render(); }
+        else tab('conf');
+    };
+    function tab(t) {
+        document.getElementById('quiz-sec').style.display = t==='quiz'?'block':'none';
+        document.getElementById('conf-sec').style.display = t==='conf'?'block':'none';
+        document.querySelectorAll('.nav-btn').forEach((b,i)=>b.classList.toggle('active', (i===0&&t==='quiz')||(i===1&&t==='conf')));
+    }
+    function render() {
+        if(!data.length) return;
+        const item = data[cur];
+        document.getElementById('word').innerText = item.word || item.question;
+        document.getElementById('img').src = item.image || item.img;
+        const box = document.getElementById('opts'); box.innerHTML = '';
+        let choices = item.options || [item.definition];
+        if(choices.length < 2) {
+            choices = [item.definition];
+            while(choices.length < 4) {
+                let r = data[Math.floor(Math.random()*data.length)].definition;
+                if(!choices.includes(r)) choices.push(r);
+            }
+            choices.sort(()=>Math.random()-0.5);
+        }
+        choices.forEach(o => {
+            const d = document.createElement('div'); d.className='opt'; d.innerText=o;
+            d.onclick = () => {
+                document.querySelectorAll('.opt').forEach(b=>b.style.pointerEvents='none');
+                if(o === item.definition) d.classList.add('correct');
+                else { d.classList.add('wrong'); document.querySelectorAll('.opt').forEach(b=>{if(b.innerText===item.definition) b.classList.add('correct')}); }
+                document.getElementById('next').style.display='block';
+                const u = new SpeechSynthesisUtterance(item.word || item.question); u.lang='en-US'; speechSynthesis.speak(u);
+            };
+            box.appendChild(d);
+        });
+        document.getElementById('next').style.display='none';
+    }
+    function goNext() { cur = (cur+1)%data.length; localStorage.setItem('v_cur', cur); render(); }
+    function save() {
+        try { const d = JSON.parse(document.getElementById('inp').value); localStorage.setItem('v_data', JSON.stringify(d)); location.reload(); }
+        catch(e) { alert("Lỗi JSON!"); }
+    }
+</script>
+</body>
+</html>
